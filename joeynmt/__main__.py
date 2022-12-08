@@ -1,5 +1,6 @@
 import argparse
 
+from joeynmt.training_nd import train_nd
 from joeynmt.training import train
 from joeynmt.prediction import test
 from joeynmt.prediction import translate
@@ -8,7 +9,7 @@ from joeynmt.prediction import translate
 def main():
     ap = argparse.ArgumentParser("Joey NMT")
 
-    ap.add_argument("mode", choices=["train", "test", "translate"],
+    ap.add_argument("mode", choices=["train_nd", "train", "test", "translate"],
                     help="train a model or test or translate")
 
     ap.add_argument("config_path", type=str,
@@ -25,7 +26,9 @@ def main():
 
     args = ap.parse_args()
 
-    if args.mode == "train":
+    if args.mode == "train_nd":
+        train_nd(cfg_file=args.config_path)
+    elif args.mode == "train":
         train(cfg_file=args.config_path)
     elif args.mode == "test":
         test(cfg_file=args.config_path, ckpt=args.ckpt,
