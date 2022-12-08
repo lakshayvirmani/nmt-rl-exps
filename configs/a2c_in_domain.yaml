@@ -43,7 +43,7 @@ training:
     logging_freq: 500
     track_peakiness_freq: 500
     eval_metric: "bleu"
-    model_dir: "models/mrt_in_domain"
+    model_dir: "models/a2c_in_domain"
     overwrite: True
     shuffle: True
     use_cuda: True
@@ -53,15 +53,12 @@ training:
 
     reinforcement_learning:
         use_reinforcement_learning: True
-        method: "mrt"
+        method: "a2c"
         log_probabilities: True
         topk: 100 
         hyperparameters: 
             temperature: 1
             alpha: 0.005
-            reward: "bleu"
-            samples: 5
-            baseline: False
 
 model:
     initializer: "xavier"
