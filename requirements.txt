@@ -1,0 +1,14 @@
+future
+pillow 
+numpy
+setuptools
+tensorboard
+torchtext
+sacrebleu==1.3.6
+subword-nmt
+matplotlib
+seaborn
+pyyaml
+pylint
+six
+wrapt

@@ -1,0 +1,11 @@
+test/data/iwslt14/*
+.idea/*
+build/*
+dist/*
+*.egg-info/*
+docs/build/*
+*__pycache__*
+models
+reverse_model
+.vscode/
+scripts/*
