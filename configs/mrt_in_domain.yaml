@@ -33,7 +33,7 @@ training:
     learning_rate_min: 0.00000005
     weight_decay: 0.0
     label_smoothing: 0.1
-    batch_size: 2048
+    batch_size: 512
     eval_batch_size: 128
     batch_multiplier: 4
     batch_type: "token"
