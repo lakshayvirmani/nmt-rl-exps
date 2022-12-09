@@ -29,9 +29,8 @@ from joeynmt.helpers import log_data_info, load_config, log_cfg, \
     make_logger, set_seed, symlink_update, ConfigurationError, \
     make_retro_logger
 from joeynmt.model import Model, _DataParallel
-from joeynmt.prediction import validate_on_data
+from joeynmt.prediction_new import validate_on_data
 from joeynmt.loss import XentLoss, ReinforceLoss
-from joeynmt.data import load_data, make_data_iter
 from joeynmt.builders import build_optimizer, build_scheduler, \
     build_gradient_clipper
 from joeynmt.prediction import test
@@ -43,6 +42,9 @@ try:
 except ImportError as no_apex:
     # error handling in TrainManager object construction
     pass
+
+from torch.utils.data import Dataset
+from joeynmt.data_new import load_data
 
 logger = logging.getLogger(__name__)
 
@@ -362,11 +364,16 @@ class TrainManager:
         :param train_data: training data
         :param valid_data: validation data
         """
-        train_iter = make_data_iter(train_data,
-                                    batch_size=self.batch_size,
-                                    batch_type=self.batch_type,
-                                    train=True, shuffle=self.shuffle)
-
+        
+        train_iter = train_data.make_iter(
+            batch_size=self.batch_size,
+            batch_type=self.batch_type,
+            shuffle=True,
+            num_workers=16,
+            device=self.device,
+            pad_index=self.model.pad_index,
+        )
+        
         #################################################################
         # simplify accumulation logic:
         #################################################################
@@ -431,10 +438,7 @@ class TrainManager:
             batch_loss = 0
 
             for i, batch in enumerate(iter(train_iter)):
-                # create a Batch object from torchtext batch
-                batch = Batch(batch, self.model.pad_index,
-                              use_cuda=self.use_cuda)
-
+                batch.sort_by_src_length()
                 # get batch loss
                 batch_loss += self._train_step(batch)
 
@@ -854,7 +858,7 @@ def train_nd(cfg_file: str) -> None:
     set_seed(seed=cfg["training"].get("random_seed", 42))
 
     # load the data
-    train_data, dev_data, test_data, src_vocab, trg_vocab = load_data(
+    src_vocab, trg_vocab, train_data, dev_data, test_data = load_data(
         data_cfg=cfg["data"])
 
     rl_method = cfg["training"]["reinforcement_learning"].get("method", False)
