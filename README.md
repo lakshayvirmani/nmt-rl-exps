@@ -2,7 +2,6 @@
 This is a fork of the Reinforce-Joey with implementations of Policy Gradient, Minimum Risk Training and Advantage Actor-Critic (A2C) algorithms. 
 
 ## Reference
-Our paper at NAACL 2021: 
 ```
 @inproceedings{kiegeland-kreutzer-2021-revisiting,
     title = "Revisiting the Weaknesses of Reinforcement Learning for Neural Machine Translation",
@@ -18,7 +17,7 @@ Our paper at NAACL 2021:
     abstract = "Policy gradient algorithms have found wide adoption in NLP, but have recently become subject to criticism, doubting their suitability for NMT. Choshen et al. (2020) identify multiple weaknesses and suspect that their success is determined by the shape of output distributions rather than the reward. In this paper, we revisit these claims and study them under a wider range of configurations. Our experiments on in-domain and cross-domain adaptation reveal the importance of exploration and reward scaling, and provide empirical counter-evidence to these claims.",
 }
 ```
-Joey NMT: 
+ 
 ```
 @inproceedings{kreutzer-etal-2019-joey,
     title = "Joey {NMT}: A Minimalist {NMT} Toolkit for Novices",
